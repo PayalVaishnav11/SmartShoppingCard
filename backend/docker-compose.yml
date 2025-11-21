@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  mongo:
+    image: mongo:6
+    restart: always
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - 27017:27017
+
+  api:
+    build: .
+    ports:
+      - 3000:3000
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/smartcart
+    depends_on:
+      - mongo
+
+volumes:
+  mongo-data:
