@@ -51,10 +51,16 @@ app.delete('/api/products/:id', async (req, res) => {
 // scanning endpoint (ESP / simulator posts here)
 app.post('/api/scan', async (req, res) => {
   const { deviceId, rfid } = req.body;
+  console.log(`[SCAN] deviceId=${deviceId}, rfid=${rfid}`);
   if (!deviceId || !rfid) return res.status(400).json({ error: 'missing' });
 
   const product = await Product.findOne({ rfidTag: rfid.trim() });
-  if (!product) return res.json({ ok: false, message: 'unknown' });
+  if (!product) {
+    console.log(`[SCAN] No product found for RFID: "${rfid.trim()}"`);
+    return res.json({ ok: false, message: 'unknown tag' });
+  }
+  console.log(`[SCAN] Matched product: ${product.name} (${product._id})`);
+
 
   let cart = await Cart.findOne({ deviceId, status: 'open' });
   if (!cart) cart = new Cart({ deviceId, items: [], total: 0 });
@@ -84,4 +90,7 @@ io.on('connection', socket => {
 });
 
 const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => console.log('API listening', PORT));
+// server.listen(PORT, () => console.log('API listening', PORT));
+server.listen(PORT, "0.0.0.0", () => {
+  console.log("API listening on 0.0.0.0:5000");
+});
