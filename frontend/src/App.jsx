@@ -7,7 +7,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import CustomerView from './CustomerView';
 import AdminProductForm from './components/AdminProductForm';
 import AdminProductList from './components/AdminProductList';
-import { ShoppingCart, Settings, Sparkles } from 'lucide-react';
+import StoreNavigator from './components/StoreNavigator';
+import { ShoppingCart, Settings, Map, Sparkles } from 'lucide-react';
 
 const ENV_DEVICE = import.meta.env.VITE_DEVICE_ID || 'cart-esp-01';
 const ENABLE_SIM = (import.meta.env.VITE_ENABLE_DEV_SIM === 'true');
@@ -189,6 +190,17 @@ export default function App() {
                 Customer
               </button>
               <button
+                onClick={() => setViewMode('storeMap')}
+                className={`px-6 py-3 text-base font-semibold transition-all duration-300 flex items-center gap-3 ${
+                  viewMode === 'storeMap'
+                    ? 'bg-cyan-500 text-white border-2 border-cyan-400'
+                    : 'bg-slate-700 text-slate-300 border-2 border-slate-600 hover:bg-slate-600'
+                }`}
+              >
+                <Map className="w-5 h-5" />
+                Store Map
+              </button>
+              <button
                 onClick={() => setViewMode('admin')}
                 className={`px-6 py-3 text-base font-semibold transition-all duration-300 flex items-center gap-3 ${
                   viewMode === 'admin'
@@ -239,6 +251,18 @@ export default function App() {
                 <AdminProductForm onSaved={onProductSaved} />
                 <AdminProductList products={products} onDeleted={onProductDeleted} onUpdated={onProductUpdated} />
               </div>
+            </motion.div>
+          ) : null}
+          {viewMode === 'storeMap' ? (
+            <motion.div
+              key="storeMap"
+              className="flex-1 w-full"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <StoreNavigator onBack={() => setViewMode('customer')} />
             </motion.div>
           ) : null}
         </AnimatePresence>
