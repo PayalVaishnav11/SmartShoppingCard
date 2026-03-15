@@ -96,7 +96,7 @@ function aStar(grid,start,goal){
   const walk=(c,r)=>{
     if(c<0||c>=C||r<0||r>=R)return false;
     const v=grid[r][c];
-    return v===CELL.FLOOR||(c===gc&&r===gr);
+    return v!==CELL.WALL;
   };
   const key=(c,r)=>`${c},${r}`;
   const open=[{f:Math.abs(sc-gc)+Math.abs(sr-gr),c:sc,r:sr}];
@@ -487,3 +487,4 @@ const S={
   zoom:{position:"absolute",bottom:20,right:16,display:"flex",flexDirection:"column",gap:5},
   zBtn:{width:36,height:36,background:"rgba(7,16,28,0.82)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:8,color:"#64748b",fontSize:"1rem",cursor:"pointer",backdropFilter:"blur(10px)",display:"flex",alignItems:"center",justifyContent:"center"},
 };
+
