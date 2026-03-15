@@ -1,7 +1,6 @@
 // src/components/StoreNavigator.jsx
 import { useEffect, useRef, useState, useCallback } from "react";
 
-// ── Grid ─────────────────────────────────────────────────
 const COLS = 32, ROWS = 24;
 const CELL = { FLOOR: 0, WALL: 1, SECTION: 2 };
 
@@ -122,7 +121,6 @@ function aStar(grid,start,goal){
   return null;
 }
 
-// ─────────────────────────────────────────────────────────
 export default function StoreNavigator({onBack}){
   const canvasRef=useRef(null);
   const animRef=useRef(null);
@@ -312,7 +310,7 @@ export default function StoreNavigator({onBack}){
   const markArrived=useCallback(()=>{
     if(!stRef.current.destination)return;
     const sec=stRef.current.destination;
-    stRef.current.playerPos=[...sec.nav]; // ← player moves to current section
+    stRef.current.playerPos=[...sec.nav]; 
     stRef.current.destination=null;
     stRef.current.path=null;
     setLastSection(sec);
